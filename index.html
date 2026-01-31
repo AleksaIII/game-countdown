@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Release Countdown</title>
+    <style>
+        /* FULLSCREEN BACKGROUND */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Inter', sans-serif; /* Clean, modern font */
+            overflow: hidden;
+            background: #000;
+        }
+
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Make sure your image file is named bg.png in GitHub */
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), 
+                        url('bg.png'); 
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+        }
+
+        /* CENTERED CONTENT */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: white;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 8vw, 4rem); /* Responsive size */
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            text-shadow: 0px 0px 20px rgba(255, 255, 255, 0.3);
+        }
+
+        /* THE TIMER BOXES */
+        .timer {
+            display: flex;
+            gap: 15px;
+        }
+
+        .time-box {
+            background: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-width: 90px;
+            backdrop-filter: blur(5px); /* Frosty glass effect */
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .time-box label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: #aaa;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background"></div>
+
+    <div class="container">
+        <h1>PROJECT RELEASE</h1>
+        <div class="timer">
+            <div class="time-box"><span id="days">00</span><label>Days</label></div>
+            <div class="time-box"><span id="hours">00</span><label>Hours</label></div>
+            <div class="time-box"><span id="minutes">00</span><label>Mins</label></div>
+            <div class="time-box"><span id="seconds">00</span><label>Secs</label></div>
+        </div>
+    </div>
+
+    <script>
+        // SET YOUR DATE HERE (Year, Month - 1, Day, Hour, Minute)
+        // Note: Months start at 0 (January is 0, December is 11)
+        const targetDate = new Date(2026, 11, 25, 0, 0, 0).getTime();
+
+        function updateTimer() {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+
+            if (diff <= 0) {
+                document.querySelector('.timer').innerHTML = "<h2>RELEASED!</h2>";
+                return;
+            }
+
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = d.toString().padStart(2, '0');
+            document.getElementById("hours").innerText = h.toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = m.toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = s.toString().padStart(2, '0');
+        }
+
+        setInterval(updateTimer, 1000);
+        updateTimer(); // Run immediately
+    </script>
+</body>
+</html>
